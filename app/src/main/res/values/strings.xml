@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Taste</string>
+
+    //type Spinner items
+    <string-array name="search_result_type">
+        <item>music</item>
+        <item>movies</item>
+        <item>shows</item>
+        <item>podcasts</item>
+        <item>books</item>
+        <item>authors</item>
+        <item>games</item>
+    </string-array>
+
+    //limit Spinner items
+    <string-array name="search_result_limit">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+    </string-array>
+
+</resources>
