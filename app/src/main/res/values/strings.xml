@@ -3,6 +3,7 @@
 
     //type Spinner items
     <string-array name="search_result_type">
+        <item>mixed</item>
         <item>music</item>
         <item>movies</item>
         <item>shows</item>
