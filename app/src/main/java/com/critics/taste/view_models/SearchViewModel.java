@@ -1,16 +1,19 @@
 package com.critics.taste.view_models;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.critics.taste.database.entity.SearchEntity;
+import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.repositories.SearchRepository;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class SearchViewModel extends ViewModel {
 
-    private LiveData<SearchEntity> searchEntityLiveData;
+    private LiveData<List<SearchResultEntity>> searchResultEntity = new MutableLiveData<>();
     private SearchRepository searchRepository;
 
     @Inject
@@ -18,15 +21,15 @@ public class SearchViewModel extends ViewModel {
         this.searchRepository = searchRepository;
     }
 
-    public void init(String searchQuery) {
-        if (this.searchEntityLiveData != null) {
+    public void init(String searchQuery, String searchType, String searchLimit) {
+        if (this.searchResultEntity != null) {
             return;
         }
 
-        searchEntityLiveData = searchRepository.getSearchResult(searchQuery);
+        searchResultEntity = searchRepository.getSearchResult(searchQuery, searchType, searchLimit);
     }
 
-    public LiveData<SearchEntity> getSimilarLiveData() {
-        return this.searchEntityLiveData;
+    public LiveData<List<SearchResultEntity>> getSearchResultEntityLiveData() {
+        return this.searchResultEntity;
     }
 }

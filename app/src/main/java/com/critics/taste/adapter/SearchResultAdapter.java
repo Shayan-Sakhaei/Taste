@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.critics.taste.MainActivity;
 import com.critics.taste.R;
 import com.critics.taste.database.entity.Result;
+import com.critics.taste.database.entity.SearchResultEntity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,13 +18,10 @@ import java.util.List;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
 
-    private final Picasso picasso;
-    private final MainActivity mainActivity;
-    private List<Result> resultList = new ArrayList<>();
+    private List<SearchResultEntity> searchResultEntityList = new ArrayList<>();
+    private View.OnClickListener mOnItemClickListener;
 
-    public SearchResultAdapter(MainActivity mainActivity, Picasso picasso) {
-        this.picasso = picasso;
-        this.mainActivity = mainActivity;
+    public SearchResultAdapter() {
     }
 
 
@@ -38,19 +36,23 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        Result result = resultList.get(position);
+        SearchResultEntity result = searchResultEntityList.get(position);
         holder.nameTextView.setText(result.getName());
         holder.typeTextView.setText(result.getType());
     }
 
     @Override
     public int getItemCount() {
-        return resultList.size();
+        return searchResultEntityList.size();
     }
 
-    public void setItems(List<Result> searchResultList) {
-        this.resultList = searchResultList;
+    public void setItems(List<SearchResultEntity> searchResultEntityList) {
+        this.searchResultEntityList = searchResultEntityList;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(View.OnClickListener itemClickListener) {
+        mOnItemClickListener = itemClickListener;
     }
 
     public class SearchResultViewHolder extends RecyclerView.ViewHolder {
@@ -61,6 +63,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             super(itemView);
             nameTextView = itemView.findViewById(R.id.name);
             typeTextView = itemView.findViewById(R.id.type);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnItemClickListener);
         }
     }
 }

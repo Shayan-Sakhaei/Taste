@@ -5,7 +5,9 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.critics.taste.database.entity.SearchEntity;
+import com.critics.taste.database.entity.SearchResultEntity;
+
+import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
@@ -13,8 +15,11 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface SearchDao {
 
     @Insert(onConflict = REPLACE)
-    void save(SearchEntity searchEntity);
+    void save(SearchResultEntity searchResultEntity);
 
-    @Query("SELECT * FROM searchentity WHERE `query` = :searchQuery")
-    LiveData<SearchEntity> load(String searchQuery);
+    @Query("SELECT * FROM results_table WHERE search_query = :searchQuery")
+    LiveData<List<SearchResultEntity>> load(String searchQuery);
+
+    @Query("SELECT * FROM results_table WHERE search_query = :userQuery")
+    SearchResultEntity hasResult(String userQuery);
 }

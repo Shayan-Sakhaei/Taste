@@ -6,9 +6,9 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.critics.taste.database.converter.DateConverter;
 import com.critics.taste.database.dao.SearchDao;
-import com.critics.taste.database.entity.SearchEntity;
+import com.critics.taste.database.entity.SearchResultEntity;
 
-@Database(entities = {SearchEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {SearchResultEntity.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class MyDatabase extends RoomDatabase {
 

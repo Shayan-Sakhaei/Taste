@@ -6,14 +6,11 @@ import android.app.Application;
 import com.critics.taste.di.component.AppComponent;
 import com.critics.taste.di.component.DaggerAppComponent;
 import com.critics.taste.di.module.ContextModule;
+import com.critics.taste.interfaces.AppComponentProvider;
 
-public class TasteApplication extends Application {
+public class TasteApplication extends Application implements AppComponentProvider {
 
     private AppComponent appComponent;
-
-    public static TasteApplication get(Activity activity) {
-        return (TasteApplication) activity.getApplication();
-    }
 
     @Override
     public void onCreate() {
@@ -24,7 +21,8 @@ public class TasteApplication extends Application {
                 .build();
     }
 
-    public AppComponent getAppComponent() {
+    @Override
+    public AppComponent getAppcomponent() {
         return appComponent;
     }
 }

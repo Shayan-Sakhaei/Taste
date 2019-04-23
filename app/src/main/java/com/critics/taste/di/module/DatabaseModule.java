@@ -6,6 +6,9 @@ import android.arch.persistence.room.Room;
 import com.critics.taste.database.MyDatabase;
 import com.critics.taste.database.dao.SearchDao;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,5 +25,10 @@ public class DatabaseModule {
     @Provides
     SearchDao provideSearchDao(MyDatabase myDatabase) {
         return myDatabase.searchDao();
+    }
+
+    @Provides
+    Executor provideExecutor() {
+        return Executors.newSingleThreadExecutor();
     }
 }

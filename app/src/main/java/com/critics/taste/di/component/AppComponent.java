@@ -1,5 +1,6 @@
 package com.critics.taste.di.component;
 
+import com.critics.taste.database.dao.SearchDao;
 import com.critics.taste.di.module.DatabaseModule;
 import com.critics.taste.di.module.PicassoModule;
 import com.critics.taste.di.module.RepositoryModule;
@@ -7,6 +8,8 @@ import com.critics.taste.di.module.RestApiModule;
 import com.critics.taste.interfaces.TasteApplicationScope;
 import com.critics.taste.interfaces.TasteDiveWebservice;
 import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.Executor;
 
 import dagger.Component;
 
@@ -17,4 +20,8 @@ public interface AppComponent {
     TasteDiveWebservice getTasteDiveWebservice();
 
     Picasso getPicasso();
+
+    SearchDao getSearchDao();
+
+    Executor getExecutor();
 }

@@ -1,5 +1,9 @@
 package com.critics.taste;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,27 +13,41 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
+import android.widget.Toast;
 
 import com.critics.taste.MainActivityFeature.DaggerMainActivityComponent;
 import com.critics.taste.MainActivityFeature.MainActivityComponent;
 import com.critics.taste.MainActivityFeature.MainActivityModule;
 import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.application.TasteApplication;
-import com.critics.taste.database.entity.Api;
 import com.critics.taste.database.entity.Result;
-import com.critics.taste.database.entity.Similar;
+import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.interfaces.TasteDiveWebservice;
+import com.critics.taste.repositories.SearchRepository;
+import com.critics.taste.view_models.SearchViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private List<Result> mResults;
+
+    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+            int position = viewHolder.getAdapterPosition();
+
+            Result resultItem = mResults.get(position);
+            Toast.makeText(MainActivity.this, "You Clicked: " + resultItem.getName(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @Inject
+    SearchRepository searchRepository;
 
     @Inject
     TasteDiveWebservice tasteDiveWebservice;
@@ -37,17 +55,21 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SearchResultAdapter searchResultAdapter;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    private SearchViewModel viewModel;
+
     EditText searchEditText;
     Spinner searchTypeSpinner;
     Spinner searchLimitSpinner;
-    Switch searchInfoSwitch;
-    Button searchButton;
+    Button searchLiveButton;
+    Button searchOfflineButton;
     RecyclerView recyclerView;
 
     String userSearchQuery;
     String userSearchType;
     String userSearchLimit;
-    boolean switchState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,53 +88,27 @@ public class MainActivity extends AppCompatActivity {
         searchTypeSpinner = findViewById(R.id.type_spinner);
         searchLimitSpinner = findViewById(R.id.limit_spinner);
         initializeSpinners();
-        searchInfoSwitch = findViewById(R.id.info_switch);
-        searchButton = findViewById(R.id.search_button);
+        searchLiveButton = findViewById(R.id.search_live_button);
+        searchOfflineButton = findViewById(R.id.search_offline_button);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(searchResultAdapter);
+        searchResultAdapter.setOnItemClickListener(onItemClickListener);
+
+        //INITIALIZE VIEWMODEL
+        viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(SearchViewModel.class);
+
+        searchLiveButton.setOnClickListener((View view) -> {
+            userSearchQuery = searchEditText.getText().toString();
+            userSearchType = searchTypeSpinner.getSelectedItem().toString();
+            userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
+
+            viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
+            viewModel.getSearchResultEntityLiveData()
+                    .observe(MainActivity.this, searchResultEntities -> searchResultAdapter.setItems(searchResultEntities));
 
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userSearchQuery = searchEditText.getText().toString();
-                userSearchType = searchTypeSpinner.getSelectedItem().toString();
-                userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
-                switchState = searchInfoSwitch.isChecked();
-
-                Call<Api> call;
-
-                if (switchState) {
-                    call = tasteDiveWebservice.getApiByTypeAndInfo(
-                            "333837-TasteMyT-HBUN5GWG", userSearchQuery,
-                            userSearchType, userSearchLimit);
-                } else if (userSearchType != "mixed") {
-                    call = tasteDiveWebservice.getApiByType(
-                            "333837-TasteMyT-HBUN5GWG", userSearchQuery,
-                            userSearchType, userSearchLimit);
-                } else {
-                    call = tasteDiveWebservice.getApiMixed(
-                            "333837-TasteMyT-HBUN5GWG", userSearchQuery,
-                            userSearchLimit);
-                }
-                call.enqueue(new Callback<Api>() {
-                    @Override
-                    public void onResponse(Call<Api> call, Response<Api> response) {
-                        if (response.isSuccessful()) {
-                            Similar similar = response.body().getSimilar();
-                            List<Result> results = similar.getResults();
-                            searchResultAdapter.setItems(results);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Api> call, Throwable t) {
-
-                    }
-                });
-            }
         });
     }
 
