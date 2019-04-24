@@ -9,11 +9,11 @@ import java.util.concurrent.Executor;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = {RestApiModule.class, DatabaseModule.class})
-public class RepositoryModule {
+@Module
+public abstract class RepositoryModule {
 
     @Provides
-    SearchRepository provideSearchResultRepository(TasteDiveWebservice tasteDiveWebservice,
+    static SearchRepository provideSearchResultRepository(TasteDiveWebservice tasteDiveWebservice,
                                                    SearchDao searchDao, Executor executor) {
         return new SearchRepository(tasteDiveWebservice, searchDao, executor);
     }

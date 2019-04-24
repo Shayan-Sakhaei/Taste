@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 public class SearchViewModel extends ViewModel {
 
-    private LiveData<List<SearchResultEntity>> searchResultEntity = new MutableLiveData<>();
+    private LiveData<List<SearchResultEntity>> searchResultEntity;
     private SearchRepository searchRepository;
 
     @Inject

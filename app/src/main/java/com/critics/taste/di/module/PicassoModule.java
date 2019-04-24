@@ -1,5 +1,6 @@
 package com.critics.taste.di.module;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.critics.taste.interfaces.ApplicationContext;
@@ -9,16 +10,17 @@ import com.squareup.picasso.Picasso;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.Reusable;
 import okhttp3.OkHttpClient;
 
-@Module(includes = OkHttpClientModule.class)
+@Module
 public class PicassoModule {
 
-    @TasteApplicationScope
+    @Reusable
     @Provides
-    public Picasso picasso(@ApplicationContext Context context, OkHttp3Downloader okHttp3Downloader) {
+    public Picasso picasso(Application context, OkHttpClient okHttpClient) {
         return new Picasso.Builder(context)
-                .downloader(okHttp3Downloader)
+                .downloader(new OkHttp3Downloader(okHttpClient))
                 .build();
     }
 

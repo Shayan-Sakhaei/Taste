@@ -7,38 +7,33 @@ import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.Reusable;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module(includes = OkHttpClientModule.class)
-public class RestApiModule {
+public abstract class RestApiModule {
 
     @Provides
-    public TasteDiveWebservice tasteDiveWebservice(Retrofit retrofit) {
+    public static TasteDiveWebservice tasteDiveWebservice(Retrofit retrofit) {
         return retrofit.create(TasteDiveWebservice.class);
     }
 
-    @TasteApplicationScope
+    @Reusable
     @Provides
-    public Retrofit retrofit(OkHttpClient okHttpClient,
-                             GsonConverterFactory gsonConverterFactory,
+    public static Retrofit retrofit(OkHttpClient okHttpClient,
                              Gson gson) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://tastedive.com")
-                .addConverterFactory(gsonConverterFactory)
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
     @Provides
-    public Gson gson() {
+    public static Gson gson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         return gsonBuilder.create();
-    }
-
-    @Provides
-    public GsonConverterFactory gsonConverterFactory(Gson gson) {
-        return GsonConverterFactory.create(gson);
     }
 }

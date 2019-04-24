@@ -17,11 +17,10 @@ import android.widget.Toast;
 
 import com.critics.taste.MainActivityFeature.DaggerMainActivityComponent;
 import com.critics.taste.MainActivityFeature.MainActivityComponent;
-import com.critics.taste.MainActivityFeature.MainActivityModule;
 import com.critics.taste.adapter.SearchResultAdapter;
-import com.critics.taste.application.TasteApplication;
 import com.critics.taste.database.entity.Result;
 import com.critics.taste.database.entity.SearchResultEntity;
+import com.critics.taste.di.AppComponentHelper;
 import com.critics.taste.interfaces.TasteDiveWebservice;
 import com.critics.taste.repositories.SearchRepository;
 import com.critics.taste.view_models.SearchViewModel;
@@ -32,7 +31,7 @@ import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity {
-    private List<Result> mResults;
+    private List<SearchResultEntity> mResults;
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -41,13 +40,10 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
 
-            Result resultItem = mResults.get(position);
+            SearchResultEntity resultItem = mResults.get(position);
             Toast.makeText(MainActivity.this, "You Clicked: " + resultItem.getName(), Toast.LENGTH_LONG).show();
         }
     };
-
-    @Inject
-    SearchRepository searchRepository;
 
     @Inject
     TasteDiveWebservice tasteDiveWebservice;
@@ -78,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         //INITIALIZE DAGGER COMPONENT
         MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
-                .mainActivityModule(new MainActivityModule(this))
-                .appComponent(TasteApplication.get(this).getAppComponent())
+                .activity(this)
+                .appcomponent(AppComponentHelper.getAppComponent(this))
                 .build();
         mainActivityComponent.injectMainActivity(this);
 
@@ -106,7 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
             viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
             viewModel.getSearchResultEntityLiveData()
-                    .observe(MainActivity.this, searchResultEntities -> searchResultAdapter.setItems(searchResultEntities));
+                    .observe(MainActivity.this, searchResultEntities -> {
+                        searchResultAdapter.setItems(searchResultEntities);
+                        mResults = searchResultEntities;
+                    });
+
 
 
         });

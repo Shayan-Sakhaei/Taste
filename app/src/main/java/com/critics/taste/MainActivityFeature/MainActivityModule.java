@@ -15,24 +15,18 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class MainActivityModule {
-
-//    private final MainActivity mainActivity;
-//
-//    public MainActivityModule(MainActivity mainActivity) {
-//        this.mainActivity = mainActivity;
-//    }
+public abstract class MainActivityModule {
 
     @Provides
     @MainActivityScope
-    public SearchResultAdapter searchResultAdapter() {
+    public static SearchResultAdapter searchResultAdapter() {
         return new SearchResultAdapter();
     }
 
-    @Provides
-    @MainActivityScope
-    public SearchRepository searchRepository(TasteDiveWebservice tasteDiveWebservice
-            , SearchDao searchDao, Executor executor) {
-        return new SearchRepository(tasteDiveWebservice, searchDao, executor);
-    }
+//    @Provides
+//    @MainActivityScope
+//    public SearchRepository searchRepository(TasteDiveWebservice tasteDiveWebservice
+//            , SearchDao searchDao, Executor executor) {
+//        return new SearchRepository(tasteDiveWebservice, searchDao, executor);
+//    }
 }
