@@ -19,6 +19,7 @@ public interface MainActivityComponent {
         MainActivityComponent build();
 
         @BindsInstance
-        Builder application(MainActivity mainActivity);
+        Builder activity(MainActivity mainActivity);
+        Builder appComponent(AppComponent component);
     }
 }

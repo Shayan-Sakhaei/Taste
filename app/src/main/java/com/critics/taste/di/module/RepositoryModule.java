@@ -9,12 +9,16 @@ import java.util.concurrent.Executor;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = {RestApiModule.class, DatabaseModule.class})
-public class RepositoryModule {
+@Module
+public abstract class RepositoryModule {
 
+
+    //is it really needed to be provided using module and @Provides? it already has a @Inject constructor
     @Provides
-    SearchRepository provideSearchResultRepository(TasteDiveWebservice tasteDiveWebservice,
-                                                   SearchDao searchDao, Executor executor) {
+    static SearchRepository provideSearchResultRepository(
+            TasteDiveWebservice tasteDiveWebservice,
+            SearchDao searchDao,
+            Executor executor) {
         return new SearchRepository(tasteDiveWebservice, searchDao, executor);
     }
 }

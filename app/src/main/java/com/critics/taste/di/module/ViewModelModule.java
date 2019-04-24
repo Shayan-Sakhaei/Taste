@@ -15,10 +15,10 @@ import dagger.multibindings.IntoMap;
 public abstract class ViewModelModule {
 
     @Binds
+    abstract ViewModelProvider.Factory bindViewModelFactory(FactoryViewModel factoryViewModel);
+
+    @Binds
     @IntoMap
     @ViewModelKey(SearchViewModel.class)
     abstract ViewModel bindSearchViewModel(SearchViewModel searchViewModel);
-
-    @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(FactoryViewModel factoryViewModel);
 }
