@@ -22,6 +22,7 @@ import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.application.TasteApplication;
 import com.critics.taste.database.entity.Result;
 import com.critics.taste.database.entity.SearchResultEntity;
+import com.critics.taste.di.AppComponentHelper;
 import com.critics.taste.interfaces.TasteDiveWebservice;
 import com.critics.taste.repositories.SearchRepository;
 import com.critics.taste.view_models.SearchViewModel;
@@ -78,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         //INITIALIZE DAGGER COMPONENT
         MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
-                .mainActivityModule(new MainActivityModule(this))
-                .appComponent(TasteApplication.get(this).getAppComponent())
+                .activity(this)
+                .appComponent(AppComponentHelper.getAppComponent(this))
                 .build();
         mainActivityComponent.injectMainActivity(this);
 
