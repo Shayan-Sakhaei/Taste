@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Inject
-    TasteDiveWebservice tasteDiveWebservice;
-
-    @Inject
     SearchResultAdapter searchResultAdapter;
 
     @Inject
@@ -59,13 +57,8 @@ public class MainActivity extends AppCompatActivity {
     EditText searchEditText;
     Spinner searchTypeSpinner;
     Spinner searchLimitSpinner;
-    Button searchLiveButton;
-    Button searchOfflineButton;
+    Button searchButton;
     RecyclerView recyclerView;
-
-    String userSearchQuery;
-    String userSearchType;
-    String userSearchLimit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
         searchTypeSpinner = findViewById(R.id.type_spinner);
         searchLimitSpinner = findViewById(R.id.limit_spinner);
         initializeSpinners();
-        searchLiveButton = findViewById(R.id.search_live_button);
-        searchOfflineButton = findViewById(R.id.search_offline_button);
+        searchButton = findViewById(R.id.search_button);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -95,10 +87,11 @@ public class MainActivity extends AppCompatActivity {
         //INITIALIZE VIEWMODEL
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(SearchViewModel.class);
 
-        searchLiveButton.setOnClickListener((View view) -> {
-            userSearchQuery = searchEditText.getText().toString();
-            userSearchType = searchTypeSpinner.getSelectedItem().toString();
-            userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
+        searchButton.setOnClickListener((View view) -> {
+            Log.d("MainActivity","Search Button Clicked");
+            String userSearchQuery = searchEditText.getText().toString();
+            String userSearchType = searchTypeSpinner.getSelectedItem().toString();
+            String userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
 
             viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
             viewModel.getSearchResultEntityLiveData()
@@ -106,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                         searchResultAdapter.setItems(searchResultEntities);
                         mResults = searchResultEntities;
                     });
-
 
 
         });

@@ -39,49 +39,54 @@ public class SearchRepository {
             String searchType,
             String searchLimit) {
         refreshResults(searchQuery, searchType, searchLimit);
-        return searchDao.load(searchQuery);
+        if (searchType.equals("mixed")) {
+            return searchDao.loadMixed(searchQuery, searchLimit);
+        } else {
+            return searchDao.load(searchQuery, searchType, searchLimit);
+        }
     }
 
     private void refreshResults(final String userSearchQuery
             , String userSearchType, String userSearchLimit) {
         executor.execute(() -> {
             boolean resultExists = (searchDao.hasResult(userSearchQuery) != null);
-            if (!resultExists) {
-                Call<Api> call;
+//            if (!resultExists) {
+            Call<Api> call;
 
-                if (userSearchType.equals("mixed")) {
-                    call = tasteDiveWebservice.getApiByMixedAndInfo(
-                            "333837-TasteMyT-HBUN5GWG", userSearchQuery
-                            , userSearchLimit);
-                } else {
-                    call = tasteDiveWebservice.getApiByTypeAndInfo(
-                            "333837-TasteMyT-HBUN5GWG", userSearchQuery
-                            , userSearchType, userSearchLimit);
-                }
-                call.enqueue(new Callback<Api>() {
-                    @Override
-                    public void onResponse(Call<Api> call, Response<Api> response) {
-                        executor.execute(() -> {
-                            Similar similar = response.body().getSimilar();
-                            List<Result> results = similar.getResults();
-                            for (Result result : results) {
-                                SearchResultEntity searchResultEntity =
-                                        new SearchResultEntity(userSearchQuery,
-                                                result.getName(), result.getType(),
-                                                result.getWTeaser(), result.getWUrl(),
-                                                result.getYUrl(), result.getYID());
-                                searchDao.save(searchResultEntity);
-                            }
-
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Call<Api> call, Throwable t) {
-
-                    }
-                });
+            if (userSearchType.equals("mixed")) {
+                call = tasteDiveWebservice.getApiByMixedAndInfo(
+                        "333837-TasteMyT-HBUN5GWG", userSearchQuery
+                        , userSearchLimit);
+            } else {
+                call = tasteDiveWebservice.getApiByTypeAndInfo(
+                        "333837-TasteMyT-HBUN5GWG", userSearchQuery
+                        , userSearchType, userSearchLimit);
             }
+            call.enqueue(new Callback<Api>() {
+                @Override
+                public void onResponse(Call<Api> call, Response<Api> response) {
+                    executor.execute(() -> {
+                        Similar similar = response.body().getSimilar();
+                        List<Result> results = similar.getResults();
+                        for (Result result : results) {
+                            SearchResultEntity searchResultEntity =
+                                    new SearchResultEntity(userSearchQuery,
+                                            result.getName(), result.getType(),
+                                            result.getWTeaser(), result.getWUrl(),
+                                            result.getYUrl(), result.getYID());
+
+                            searchDao.save(searchResultEntity);
+                        }
+
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Api> call, Throwable t) {
+
+                }
+            });
+//            }
         });
 
 

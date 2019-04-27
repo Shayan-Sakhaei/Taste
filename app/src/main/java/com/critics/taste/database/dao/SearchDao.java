@@ -17,8 +17,11 @@ public interface SearchDao {
     @Insert(onConflict = REPLACE)
     void save(SearchResultEntity searchResultEntity);
 
-    @Query("SELECT * FROM results_table WHERE search_query = :searchQuery")
-    LiveData<List<SearchResultEntity>> load(String searchQuery);
+    @Query("SELECT * FROM results_table WHERE search_query = :searchQuery AND result_type = :searchType LIMIT :searchLimit")
+    LiveData<List<SearchResultEntity>> load(String searchQuery, String searchType, String searchLimit);
+
+    @Query("SELECT * FROM results_table WHERE search_query = :searchQuery LIMIT :searchLimit")
+    LiveData<List<SearchResultEntity>> loadMixed(String searchQuery, String searchLimit);
 
     @Query("SELECT * FROM results_table WHERE search_query = :userQuery")
     SearchResultEntity hasResult(String userQuery);

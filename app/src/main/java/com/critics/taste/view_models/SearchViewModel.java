@@ -22,9 +22,9 @@ public class SearchViewModel extends ViewModel {
     }
 
     public void init(String searchQuery, String searchType, String searchLimit) {
-        if (this.searchResultEntity != null) {
-            return;
-        }
+//        if (this.searchResultEntity != null) {
+//            return;
+//        }
 
         searchResultEntity = searchRepository.getSearchResult(searchQuery, searchType, searchLimit);
     }
