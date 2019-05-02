@@ -22,11 +22,4 @@ public abstract class MainActivityModule {
     public static SearchResultAdapter searchResultAdapter() {
         return new SearchResultAdapter();
     }
-
-//    @Provides
-//    @MainActivityScope
-//    public SearchRepository searchRepository(TasteDiveWebservice tasteDiveWebservice
-//            , SearchDao searchDao, Executor executor) {
-//        return new SearchRepository(tasteDiveWebservice, searchDao, executor);
-//    }
 }

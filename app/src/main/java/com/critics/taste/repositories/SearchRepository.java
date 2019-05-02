@@ -49,7 +49,7 @@ public class SearchRepository {
     private void refreshResults(final String userSearchQuery
             , String userSearchType, String userSearchLimit) {
         executor.execute(() -> {
-            boolean resultExists = (searchDao.hasResult(userSearchQuery) != null);
+//            boolean resultExists = (searchDao.hasResult(userSearchQuery,userSearchType,userSearchLimit) != null);
 //            if (!resultExists) {
             Call<Api> call;
 
@@ -90,5 +90,15 @@ public class SearchRepository {
         });
 
 
+    }
+
+    public LiveData<List<SearchResultEntity>> getSavedResults(String searchQuery,
+                                                              String searchType,
+                                                              String searchLimit){
+        if (searchType.equals("mixed")) {
+            return searchDao.loadMixed(searchQuery, searchLimit);
+        } else {
+            return searchDao.load(searchQuery, searchType, searchLimit);
+        }
     }
 }

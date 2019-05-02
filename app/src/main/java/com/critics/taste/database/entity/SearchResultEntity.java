@@ -6,17 +6,16 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import dagger.Provides;
+
 @Entity(tableName = "results_table")
 public class SearchResultEntity {
-
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    private int id;
 
     @NonNull
     @ColumnInfo(name = "search_query")
     private String query;
 
+    @PrimaryKey
     @NonNull
     @ColumnInfo(name = "result_name")
     private String name;
@@ -49,14 +48,6 @@ public class SearchResultEntity {
         this.wUrl = wUrl;
         this.yUrl = yUrl;
         this.yId = yId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @NonNull

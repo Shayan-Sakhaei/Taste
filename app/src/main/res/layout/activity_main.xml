@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <EditText
-        android:textColorHint="@android:color/white"
         android:id="@+id/search_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/search_button"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_edittext"
@@ -19,7 +19,7 @@
         android:inputType="textPersonName"
         android:padding="5dp"
         android:textColor="@android:color/white"
-        android:layout_alignBaseline="@+id/search_button" />
+        android:textColorHint="@android:color/white" />
 
     <Button
         android:id="@+id/search_button"
@@ -41,7 +41,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Select Type"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <Spinner
         android:id="@+id/type_spinner"
@@ -50,7 +50,8 @@
         android:layout_below="@+id/search_editText"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/type_textView" />
+        android:layout_toEndOf="@+id/type_textView"
+        android:background="@android:color/white" />
 
     <TextView
         android:id="@+id/limit_textView"
@@ -60,7 +61,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Select Quantity"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <Spinner
         android:id="@+id/limit_spinner"
@@ -69,7 +70,8 @@
         android:layout_below="@+id/type_textView"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/limit_textView" />
+        android:layout_toEndOf="@+id/limit_textView"
+        android:background="@android:color/white" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"

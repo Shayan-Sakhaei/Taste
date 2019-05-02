@@ -11,13 +11,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SearchViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel {
 
     private LiveData<List<SearchResultEntity>> searchResultEntity;
     private SearchRepository searchRepository;
 
     @Inject
-    public SearchViewModel(SearchRepository searchRepository) {
+    public MainActivityViewModel(SearchRepository searchRepository) {
         this.searchRepository = searchRepository;
     }
 

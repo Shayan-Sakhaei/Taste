@@ -4,8 +4,9 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.critics.taste.di.key.ViewModelKey;
+import com.critics.taste.view_models.DetailActivityViewModel;
 import com.critics.taste.view_models.FactoryViewModel;
-import com.critics.taste.view_models.SearchViewModel;
+import com.critics.taste.view_models.MainActivityViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -19,8 +20,13 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchViewModel.class)
-    abstract ViewModel bindSearchViewModel(SearchViewModel searchViewModel);
+    @ViewModelKey(MainActivityViewModel.class)
+    abstract ViewModel bindMainActivityViewModel(MainActivityViewModel mainActivityViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailActivityViewModel.class)
+    abstract ViewModel bindDetailActivityViewModel(DetailActivityViewModel detailActivityViewModel);
 
 
 }
