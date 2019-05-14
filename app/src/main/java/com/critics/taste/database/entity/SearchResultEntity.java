@@ -3,19 +3,24 @@ package com.critics.taste.database.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import dagger.Provides;
 
-@Entity(tableName = "results_table")
+@Entity(tableName = "results_table",
+        indices = {@Index(value = {"result_name"}, unique = true)})
 public class SearchResultEntity {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "row_id")
+    private long id;
 
     @NonNull
     @ColumnInfo(name = "search_query")
     private String query;
 
-    @PrimaryKey
     @NonNull
     @ColumnInfo(name = "result_name")
     private String name;
@@ -40,7 +45,8 @@ public class SearchResultEntity {
     }
 
     @Ignore
-    public SearchResultEntity(@NonNull String query, @NonNull String name, @NonNull String type, String wTeaser, String wUrl, String yUrl, String yId) {
+    public SearchResultEntity(@NonNull String query, @NonNull String name, @NonNull String type,
+                              String wTeaser, String wUrl, String yUrl, String yId) {
         this.query = query;
         this.name = name;
         this.type = type;
@@ -48,6 +54,27 @@ public class SearchResultEntity {
         this.wUrl = wUrl;
         this.yUrl = yUrl;
         this.yId = yId;
+    }
+
+    @Ignore
+    public SearchResultEntity(long id, @NonNull String query, @NonNull String name, @NonNull String type,
+                              String wTeaser, String wUrl, String yUrl, String yId) {
+        this.id = id;
+        this.query = query;
+        this.name = name;
+        this.type = type;
+        this.wTeaser = wTeaser;
+        this.wUrl = wUrl;
+        this.yUrl = yUrl;
+        this.yId = yId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @NonNull

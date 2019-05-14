@@ -25,7 +25,6 @@ public interface SearchDao {
             "ORDER BY result_name ASC LIMIT :searchLimit")
     LiveData<List<SearchResultEntity>> loadMixed(String searchQuery, String searchLimit);
 
-    @Query("SELECT * FROM results_table WHERE search_query = :userQuery AND" +
-            " result_type = :searchType ORDER BY result_name ASC LIMIT :searchLimit")
-    SearchResultEntity hasResult(String userQuery, String searchType, String searchLimit);
+    @Query("SELECT * FROM results_table WHERE row_id = :rowId")
+    LiveData<SearchResultEntity> loadSavedResult(long rowId);
 }

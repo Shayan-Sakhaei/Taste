@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.critics.taste.DetailActivityFeature.DaggerDetailActivityComponent;
 import com.critics.taste.DetailActivityFeature.DetailActivityComponent;
-import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.di.AppComponentHelper;
 import com.critics.taste.view_models.DetailActivityViewModel;
 
@@ -46,24 +45,20 @@ public class DetailActivity extends AppCompatActivity {
         //INITIALIZE VIEWMODEL
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(DetailActivityViewModel.class);
 
-        //RETRIEVE INTENT EXTRAS
+        //RETRIEVE INTENT EXTRAS(GET SELECTED ROW ID)
         Intent intent = getIntent();
-        int resultPosition = intent.getIntExtra("resultPosition", 0);
-        String query = intent.getStringExtra("query");
-        String type = intent.getStringExtra("type");
-        String limit = intent.getStringExtra("limit");
+        long rowId = intent.getLongExtra("clickedResultId", 0);
 
         //RETRIEVE SLECTED RESULT DETAILS
-        viewModel.init(query, type, limit);
-        viewModel.getSavedResultEntityLiveData().observe(DetailActivity.this, searchResultEntities -> {
-            SearchResultEntity searchResultEntity = searchResultEntities.get(resultPosition);
-            String savedName = searchResultEntity.getName();
-            String savedType = searchResultEntity.getType();
-            String savedTeaser = searchResultEntity.getWTeaser();
+        viewModel.init(rowId);
+        viewModel.getSavedResultEntityLiveData().observe(DetailActivity.this, searchResultEntity -> {
+            String resultName = searchResultEntity.getName();
+            String resultType = searchResultEntity.getType();
+            String resultTeaser = searchResultEntity.getWTeaser();
 
-            textName.setText(savedName);
-            textType.setText(savedType);
-            textTeaser.setText(savedTeaser);
+            textName.setText(resultName);
+            textType.setText(resultType);
+            textTeaser.setText(resultTeaser);
         });
 
 

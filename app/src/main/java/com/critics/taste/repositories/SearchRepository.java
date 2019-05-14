@@ -92,13 +92,7 @@ public class SearchRepository {
 
     }
 
-    public LiveData<List<SearchResultEntity>> getSavedResults(String searchQuery,
-                                                              String searchType,
-                                                              String searchLimit){
-        if (searchType.equals("mixed")) {
-            return searchDao.loadMixed(searchQuery, searchLimit);
-        } else {
-            return searchDao.load(searchQuery, searchType, searchLimit);
-        }
+    public LiveData<SearchResultEntity> getSavedResults(long rowId) {
+        return searchDao.loadSavedResult(rowId);
     }
 }

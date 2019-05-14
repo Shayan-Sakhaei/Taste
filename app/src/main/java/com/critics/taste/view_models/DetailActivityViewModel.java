@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 public class DetailActivityViewModel extends ViewModel {
 
-    private LiveData<List<SearchResultEntity>> savedResultEntity;
+    private LiveData<SearchResultEntity> savedResultEntity;
     private SearchRepository searchRepository;
 
     @Inject
@@ -20,11 +20,11 @@ public class DetailActivityViewModel extends ViewModel {
         this.searchRepository = searchRepository;
     }
 
-    public void init(String searchQuery, String searchType, String searchLimit) {
-        savedResultEntity = searchRepository.getSavedResults(searchQuery, searchType, searchLimit);
+    public void init(long rowId) {
+        savedResultEntity = searchRepository.getSavedResults(rowId);
     }
 
-    public LiveData<List<SearchResultEntity>> getSavedResultEntityLiveData() {
+    public LiveData<SearchResultEntity> getSavedResultEntityLiveData() {
         return this.savedResultEntity;
     }
 }

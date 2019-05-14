@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.critics.taste.MainActivityFeature.DaggerMainActivityComponent;
 import com.critics.taste.MainActivityFeature.MainActivityComponent;
+import com.critics.taste.Services.ImageDownloadService;
 import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.di.AppComponentHelper;
@@ -42,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
 
             SearchResultEntity resultItem = mResults.get(position);
+            long clickedResultId = resultItem.getId();
             intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("clickedResultId", clickedResultId);
             intent.putExtra("resultPosition", position);
             intent.putExtra("query", userSearchQuery);
             intent.putExtra("type", userSearchType);
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.drawable.launcher_backgorund);
 
+
         //INITIALIZE DAGGER COMPONENT
         MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
                 .activity(this)
@@ -78,8 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mainActivityComponent.injectMainActivity(this);
 
+
         //INITIALIZE VIEWMODEL
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(MainActivityViewModel.class);
+
 
         //INITIALIZE VIEWS
         searchEditText = findViewById(R.id.search_editText);
@@ -93,11 +99,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(searchResultAdapter);
         searchResultAdapter.setOnItemClickListener(onItemClickListener);
 
+
+        //SEARCH BUTTON PRESSED
         searchButton.setOnClickListener((View view) -> {
             Log.d("MainActivity", "Search Button Clicked");
             userSearchQuery = searchEditText.getText().toString();
             userSearchType = searchTypeSpinner.getSelectedItem().toString();
             userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
+
+            Intent intent = new Intent(MainActivity.this, ImageDownloadService.class);
+            intent.putExtra("searchQuery", userSearchQuery);
+            startService(intent);
 
             viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
             viewModel.getSearchResultEntityLiveData()
@@ -105,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
                         searchResultAdapter.setItems(searchResultEntities);
                         mResults = searchResultEntities;
                     });
-
-
         });
     }
 
