@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.critics.taste.MainActivityFeature.DaggerMainActivityComponent;
 import com.critics.taste.MainActivityFeature.MainActivityComponent;
-import com.critics.taste.Services.ImageDownloadService;
 import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.di.AppComponentHelper;
@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     String userSearchType;
     String userSearchLimit;
 
+    Intent intent;
+    String intentAction;
+    String intentType;
+
     //INITIALIZE ITEM CLICK LISTENER
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -46,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
             long clickedResultId = resultItem.getId();
             intent = new Intent(MainActivity.this, DetailActivity.class);
             intent.putExtra("clickedResultId", clickedResultId);
-            intent.putExtra("resultPosition", position);
-            intent.putExtra("query", userSearchQuery);
-            intent.putExtra("type", userSearchType);
-            intent.putExtra("limit", userSearchLimit);
+
             startActivity(intent);
         }
     };
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         //INITIALIZE VIEWMODEL
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(MainActivityViewModel.class);
+        viewModel.sendNotification();
 
 
         //INITIALIZE VIEWS
@@ -100,6 +102,18 @@ public class MainActivity extends AppCompatActivity {
         searchResultAdapter.setOnItemClickListener(onItemClickListener);
 
 
+        //HANDLE RECEIVING INTENTS
+        intent = getIntent();
+        intentAction = intent.getAction();
+        intentType = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(intentAction) && intentType != null) {
+            if ("text/plain".equals(intentType)) {
+                handelSendText(intent);
+            }
+        }
+
+
         //SEARCH BUTTON PRESSED
         searchButton.setOnClickListener((View view) -> {
             Log.d("MainActivity", "Search Button Clicked");
@@ -107,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
             userSearchType = searchTypeSpinner.getSelectedItem().toString();
             userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
 
-            Intent intent = new Intent(MainActivity.this, ImageDownloadService.class);
-            intent.putExtra("searchQuery", userSearchQuery);
-            startService(intent);
 
             viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
             viewModel.getSearchResultEntityLiveData()
@@ -119,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     });
         });
     }
+
 
     public void initializeSpinners() {
         ArrayAdapter<CharSequence> typeSpinnerAdapter = ArrayAdapter
@@ -132,5 +144,13 @@ public class MainActivity extends AppCompatActivity {
                         , android.R.layout.simple_spinner_item);
         limitSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         searchLimitSpinner.setAdapter(limitSpinnerAdapter);
+    }
+
+    
+    private void handelSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            searchEditText.setText(sharedText);
+        }
     }
 }

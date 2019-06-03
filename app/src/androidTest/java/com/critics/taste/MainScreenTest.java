@@ -18,10 +18,10 @@ public class MainScreenTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivityActivityTestRule =
-            new ActivityTestRule<MainActivity>(MainActivity.class);
+            new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void clickSearchBytton_showRecyclerViewofResults() throws Exception {
+    public void clickSearchButton_showRecyclerViewOfResults() {
         onView(ViewMatchers.withId(R.id.search_button))
                 .perform(click());
         onView(ViewMatchers.withId(R.id.recyclerview))
