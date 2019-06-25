@@ -47,7 +47,6 @@ public class MainActivityViewModel extends ViewModel {
     public void sendNotification() {
         Constraints constraints = new Constraints.Builder()
                 .setRequiresCharging(true)
-                .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
         WorkRequest request = new OneTimeWorkRequest.Builder(TasteWorker.class)
