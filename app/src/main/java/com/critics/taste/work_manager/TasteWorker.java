@@ -38,27 +38,31 @@ public class TasteWorker extends Worker {
                 0, intent, 0);
 
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(getApplicationContext(), "TASTE_CHANNEL_ID")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle("Taste")
-                .setContentText("We Know how you like it,let's Make it then...")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        NotificationCompat.Builder notifBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), "TASTE_CHANNEL_ID")
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setContentTitle("Taste")
+                        .setContentText("We Know how you like it,let's Make it then...")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        NotificationManagerCompat notificationManager =
+                NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(11, notifBuilder.build());
     }
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Taste Notif Channel";
+            CharSequence name = "Taste Notification Channel";
             String description = "not too high and not too low priority";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("TasteNotifID", name, importance);
+            NotificationChannel channel =
+                    new NotificationChannel("TasteNotificationID", name, importance);
             channel.setDescription(description);
 
-            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
+            NotificationManager notificationManager =
+                    getApplicationContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

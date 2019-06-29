@@ -34,6 +34,10 @@ public class SearchRepository {
         this.executor = executor;
     }
 
+    public void delete(SearchResultEntity searchResultEntity) {
+        searchDao.delete(searchResultEntity);
+    }
+
     public LiveData<List<SearchResultEntity>> getSearchResult(
             String searchQuery,
             String searchType,

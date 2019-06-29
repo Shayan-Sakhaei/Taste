@@ -44,6 +44,10 @@ public class MainActivityViewModel extends ViewModel {
         return this.searchResultEntity;
     }
 
+    public void delete(SearchResultEntity searchResultEntity) {
+        searchRepository.delete(searchResultEntity);
+    }
+
     public void sendNotification() {
         Constraints constraints = new Constraints.Builder()
                 .setRequiresCharging(true)

@@ -51,6 +51,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         notifyDataSetChanged();
     }
 
+    public SearchResultEntity getSearchResultEntityAt(int position){
+        return searchResultEntityList.get(position);
+    }
+
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
         mOnItemClickListener = itemClickListener;
     }

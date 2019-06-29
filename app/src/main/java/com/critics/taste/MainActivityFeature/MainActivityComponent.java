@@ -2,7 +2,6 @@ package com.critics.taste.MainActivityFeature;
 
 import com.critics.taste.MainActivity;
 import com.critics.taste.di.component.AppComponent;
-import com.critics.taste.di.module.ViewModelModule;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -21,6 +20,6 @@ public interface MainActivityComponent {
         @BindsInstance
         Builder activity(MainActivity mainActivity);
 
-        Builder appcomponent(AppComponent appComponent);
+        Builder appComponent(AppComponent appComponent);
     }
 }
