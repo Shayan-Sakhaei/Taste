@@ -4,14 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <fragment
-        android:name="com.critics.taste.fragments.MasterFragment"
-        android:id="@+id/fragment_master"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+    android:orientation="vertical"
+    android:id="@+id/main_container">
 
 
 </FrameLayout>

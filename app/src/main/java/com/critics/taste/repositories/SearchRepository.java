@@ -21,24 +21,24 @@ import retrofit2.Response;
 public class SearchRepository {
 
     private final TasteDiveWebservice tasteDiveWebservice;
-    private final SearchDaoJava searchDaoKotlin;
+    private final SearchDaoJava searchDao;
     private final Executor executor;
 
     @Inject
     public SearchRepository(TasteDiveWebservice tasteDiveWebservice,
-                            SearchDaoJava searchDaoKotlin,
+                            SearchDaoJava searchDao,
                             Executor executor) {
         this.tasteDiveWebservice = tasteDiveWebservice;
-        this.searchDaoKotlin = searchDaoKotlin;
+        this.searchDao = searchDao;
         this.executor = executor;
     }
 
     public LiveData<SearchResultEntity> getSavedResults(long rowId) {
-        return searchDaoKotlin.loadSavedResult(rowId);
+        return searchDao.loadSavedResult(rowId);
     }
 
     public void deleteSavedResult(long rowId) {
-        searchDaoKotlin.deleteSavedResult(rowId);
+        searchDao.deleteSavedResult(rowId);
     }
 
     public LiveData<List<SearchResultEntity>> getSearchResult(
@@ -47,16 +47,16 @@ public class SearchRepository {
             String searchLimit) {
         refreshResults(searchQuery, searchType, searchLimit);
         if (searchType.equals("mixed")) {
-            return searchDaoKotlin.loadMixed(searchQuery, searchLimit);
+            return searchDao.loadMixed(searchQuery, searchLimit);
         } else {
-            return searchDaoKotlin.load(searchQuery, searchType, searchLimit);
+            return searchDao.load(searchQuery, searchType, searchLimit);
         }
     }
 
     private void refreshResults(final String userSearchQuery
             , String userSearchType, String userSearchLimit) {
         executor.execute(() -> {
-//            boolean resultExists = (searchDaoKotlin.hasResult(userSearchQuery,userSearchType,userSearchLimit) != null);
+//            boolean resultExists = (searchDao.hasResult(userSearchQuery,userSearchType,userSearchLimit) != null);
 //            if (!resultExists) {
             Call<Api> call;
 
@@ -82,7 +82,7 @@ public class SearchRepository {
                                             result.getWTeaser(), result.getWUrl(),
                                             result.getYUrl(), result.getYID());
 
-                            searchDaoKotlin.save(searchResultEntity);
+                            searchDao.save(searchResultEntity);
                         }
 
                     });

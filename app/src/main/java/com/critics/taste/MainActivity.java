@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,8 @@ import com.critics.taste.di.component.MainActivityComponent;
 import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.di.AppComponentHelper;
+import com.critics.taste.fragments.DetailFragment;
+import com.critics.taste.fragments.MasterFragment;
 import com.critics.taste.view_models.MainActivityViewModel;
 
 import java.util.List;
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MainActivityViewModel viewModel;
 
+
     EditText searchEditText;
     Spinner searchTypeSpinner;
     Spinner searchLimitSpinner;
@@ -75,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setBackgroundDrawableResource(R.drawable.launcher_backgorund);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.main_container, new MasterFragment());
+        transaction.commit();
 
 
 //        //INITIALIZE DAGGER COMPONENT
@@ -123,14 +131,21 @@ public class MainActivity extends AppCompatActivity {
 //            userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
 //
 //
-//            viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
-//            viewModel.getSearchResultEntityLiveData()
+//            viewModel.initSearchApi(userSearchQuery, userSearchType, userSearchLimit);
+//            viewModel.getSearchResultList()
 //                    .observe(MainActivity.this, searchResultEntities -> {
 //                        searchResultAdapter.setItems(searchResultEntities);
 //                        mResults = searchResultEntities;
 //                    });
 //        });
 //
+    }
+
+    public void replaceFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_container, new DetailFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
