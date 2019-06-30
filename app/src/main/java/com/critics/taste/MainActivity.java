@@ -32,47 +32,47 @@ import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity {
-    private List<SearchResultEntity> mResults;
-    String userSearchQuery;
-    String userSearchType;
-    String userSearchLimit;
-
-    Intent intent;
-    String intentAction;
-    String intentType;
-
-    //INITIALIZE ITEM CLICK LISTENER
-    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            final Intent intent;
-
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-            int position = viewHolder.getAdapterPosition();
-
-            SearchResultEntity resultItem = mResults.get(position);
-            long clickedResultId = resultItem.getId();
-            intent = new Intent(MainActivity.this, DetailActivity.class);
-            intent.putExtra("clickedResultId", clickedResultId);
-
-            startActivity(intent);
-        }
-    };
-
-    @Inject
-    SearchResultAdapter searchResultAdapter;
-
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-
-    private MainActivityViewModel viewModel;
-
-
-    EditText searchEditText;
-    Spinner searchTypeSpinner;
-    Spinner searchLimitSpinner;
-    Button searchButton;
-    RecyclerView recyclerView;
+//    private List<SearchResultEntity> mResults;
+//    String userSearchQuery;
+//    String userSearchType;
+//    String userSearchLimit;
+//
+//    Intent intent;
+//    String intentAction;
+//    String intentType;
+//
+//    //INITIALIZE ITEM CLICK LISTENER
+//    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            final Intent intent;
+//
+//            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+//            int position = viewHolder.getAdapterPosition();
+//
+//            SearchResultEntity resultItem = mResults.get(position);
+//            long clickedResultId = resultItem.getId();
+//            intent = new Intent(MainActivity.this, DetailActivity.class);
+//            intent.putExtra("clickedResultId", clickedResultId);
+//
+//            startActivity(intent);
+//        }
+//    };
+//
+//    @Inject
+//    SearchResultAdapter searchResultAdapter;
+//
+//    @Inject
+//    ViewModelProvider.Factory viewModelFactory;
+//
+//    private MainActivityViewModel viewModel;
+//
+//
+//    EditText searchEditText;
+//    Spinner searchTypeSpinner;
+//    Spinner searchLimitSpinner;
+//    Button searchButton;
+//    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,25 +149,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void initializeSpinners() {
-        ArrayAdapter<CharSequence> typeSpinnerAdapter = ArrayAdapter
-                .createFromResource(this, R.array.search_result_type
-                        , android.R.layout.simple_spinner_item);
-        typeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        searchTypeSpinner.setAdapter(typeSpinnerAdapter);
-
-        ArrayAdapter<CharSequence> limitSpinnerAdapter = ArrayAdapter
-                .createFromResource(this, R.array.search_result_limit
-                        , android.R.layout.simple_spinner_item);
-        limitSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        searchLimitSpinner.setAdapter(limitSpinnerAdapter);
-    }
-
-
-    private void handelSendText(Intent intent) {
-        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null) {
-            searchEditText.setText(sharedText);
-        }
-    }
+//    public void initializeSpinners() {
+//        ArrayAdapter<CharSequence> typeSpinnerAdapter = ArrayAdapter
+//                .createFromResource(this, R.array.search_result_type
+//                        , android.R.layout.simple_spinner_item);
+//        typeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        searchTypeSpinner.setAdapter(typeSpinnerAdapter);
+//
+//        ArrayAdapter<CharSequence> limitSpinnerAdapter = ArrayAdapter
+//                .createFromResource(this, R.array.search_result_limit
+//                        , android.R.layout.simple_spinner_item);
+//        limitSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        searchLimitSpinner.setAdapter(limitSpinnerAdapter);
+//    }
+//
+//
+//    private void handelSendText(Intent intent) {
+//        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+//        if (sharedText != null) {
+//            searchEditText.setText(sharedText);
+//        }
+//    }
 }

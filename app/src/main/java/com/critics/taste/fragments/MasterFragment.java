@@ -4,7 +4,6 @@ package com.critics.taste.fragments;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.critics.taste.DetailActivity;
 import com.critics.taste.MainActivity;
 import com.critics.taste.R;
 import com.critics.taste.adapter.SearchResultAdapter;
