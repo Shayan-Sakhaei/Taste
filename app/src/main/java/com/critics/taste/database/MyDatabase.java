@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
 import com.critics.taste.database.converter.DateConverter;
-import com.critics.taste.database.dao.SearchDao;
+import com.critics.taste.database.dao.SearchDaoJava;
 import com.critics.taste.database.entity.SearchResultEntity;
 
 @Database(entities = {SearchResultEntity.class}, version = 1, exportSchema = false)
@@ -16,5 +16,5 @@ public abstract class MyDatabase extends RoomDatabase {
     private static volatile MyDatabase INSTANCE;
 
     //DAO
-    public abstract SearchDao searchDao();
+    public abstract SearchDaoJava searchDao();
 }

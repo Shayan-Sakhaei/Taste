@@ -4,7 +4,7 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 
 import com.critics.taste.database.MyDatabase;
-import com.critics.taste.database.dao.SearchDao;
+import com.critics.taste.database.dao.SearchDaoJava;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -26,7 +26,7 @@ public abstract class DatabaseModule {
     }
 
     @Provides
-    static SearchDao provideSearchDao(MyDatabase myDatabase) {
+    static SearchDaoJava provideSearchDao(MyDatabase myDatabase) {
         return myDatabase.searchDao();
     }
 

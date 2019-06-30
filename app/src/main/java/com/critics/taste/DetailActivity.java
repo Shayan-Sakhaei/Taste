@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.critics.taste.DetailActivityFeature.DaggerDetailActivityComponent;
-import com.critics.taste.DetailActivityFeature.DetailActivityComponent;
+import com.critics.taste.di.component.DaggerDetailActivityComponent;
+import com.critics.taste.di.component.DetailActivityComponent;
 import com.critics.taste.di.AppComponentHelper;
 import com.critics.taste.view_models.DetailActivityViewModel;
 

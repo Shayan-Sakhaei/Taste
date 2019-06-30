@@ -15,10 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.critics.taste.MainActivityFeature.DaggerMainActivityComponent;
-import com.critics.taste.MainActivityFeature.MainActivityComponent;
+import com.critics.taste.di.component.DaggerMainActivityComponent;
+import com.critics.taste.di.component.MainActivityComponent;
 import com.critics.taste.adapter.SearchResultAdapter;
 import com.critics.taste.database.entity.SearchResultEntity;
 import com.critics.taste.di.AppComponentHelper;
@@ -78,71 +77,60 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.launcher_backgorund);
 
 
-        //INITIALIZE DAGGER COMPONENT
-        MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
-                .activity(this)
-                .appComponent(AppComponentHelper.getAppComponent(this))
-                .build();
-        mainActivityComponent.injectMainActivity(this);
-
-
-        //INITIALIZE VIEWMODEL
-        viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(MainActivityViewModel.class);
-        viewModel.sendNotification();
-
-
-        //INITIALIZE VIEWS
-        searchEditText = findViewById(R.id.search_editText);
-        searchTypeSpinner = findViewById(R.id.type_spinner);
-        searchLimitSpinner = findViewById(R.id.limit_spinner);
-        initializeSpinners();
-        searchButton = findViewById(R.id.search_button);
-        recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(searchResultAdapter);
-        searchResultAdapter.setOnItemClickListener(onItemClickListener);
-
-
-        //HANDLE RECEIVING INTENTS
-        intent = getIntent();
-        intentAction = intent.getAction();
-        intentType = intent.getType();
-
-        if (Intent.ACTION_SEND.equals(intentAction) && intentType != null) {
-            if ("text/plain".equals(intentType)) {
-                handelSendText(intent);
-            }
-        }
-
-
-        //SEARCH BUTTON PRESSED
-        searchButton.setOnClickListener((View view) -> {
-            Log.d("MainActivity", "Search Button Clicked");
-            userSearchQuery = searchEditText.getText().toString();
-            userSearchType = searchTypeSpinner.getSelectedItem().toString();
-            userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
-
-
-            viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
-            viewModel.getSearchResultEntityLiveData()
-                    .observe(MainActivity.this, searchResultEntities -> {
-                        searchResultAdapter.setItems(searchResultEntities);
-                        mResults = searchResultEntities;
-                    });
-        });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                viewModel.delete(searchResultAdapter.getSearchResultEntityAt(viewHolder.getAdapterPosition()));
-            }
-        }).attachToRecyclerView(recyclerView);
+//        //INITIALIZE DAGGER COMPONENT
+//        MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
+//                .activity(this)
+//                .appComponent(AppComponentHelper.getAppComponent(this))
+//                .build();
+//        mainActivityComponent.injectMainActivity(this);
+//
+//
+//        //INITIALIZE VIEWMODEL
+//        viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(MainActivityViewModel.class);
+//        viewModel.sendNotification();
+//
+//
+//        //INITIALIZE VIEWS
+//        searchEditText = findViewById(R.id.search_editText);
+//        searchTypeSpinner = findViewById(R.id.type_spinner);
+//        searchLimitSpinner = findViewById(R.id.limit_spinner);
+//        initializeSpinners();
+//        searchButton = findViewById(R.id.search_button);
+//        recyclerView = findViewById(R.id.recyclerview);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setAdapter(searchResultAdapter);
+//        searchResultAdapter.setOnItemClickListener(onItemClickListener);
+//
+//
+//        //HANDLE RECEIVING INTENTS
+//        intent = getIntent();
+//        intentAction = intent.getAction();
+//        intentType = intent.getType();
+//
+//        if (Intent.ACTION_SEND.equals(intentAction) && intentType != null) {
+//            if ("text/plain".equals(intentType)) {
+//                handelSendText(intent);
+//            }
+//        }
+//
+//
+//        //SEARCH BUTTON PRESSED
+//        searchButton.setOnClickListener((View view) -> {
+//            Log.d("MainActivity", "Search Button Clicked");
+//            userSearchQuery = searchEditText.getText().toString();
+//            userSearchType = searchTypeSpinner.getSelectedItem().toString();
+//            userSearchLimit = searchLimitSpinner.getSelectedItem().toString();
+//
+//
+//            viewModel.init(userSearchQuery, userSearchType, userSearchLimit);
+//            viewModel.getSearchResultEntityLiveData()
+//                    .observe(MainActivity.this, searchResultEntities -> {
+//                        searchResultAdapter.setItems(searchResultEntities);
+//                        mResults = searchResultEntities;
+//                    });
+//        });
+//
     }
 
 

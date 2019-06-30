@@ -1,9 +1,8 @@
 package com.critics.taste.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
-import com.critics.taste.database.dao.SearchDao;
+import com.critics.taste.database.dao.SearchDaoJava;
 import com.critics.taste.database.entity.Api;
 import com.critics.taste.database.entity.Result;
 import com.critics.taste.database.entity.SearchResultEntity;
@@ -22,20 +21,24 @@ import retrofit2.Response;
 public class SearchRepository {
 
     private final TasteDiveWebservice tasteDiveWebservice;
-    private final SearchDao searchDao;
+    private final SearchDaoJava searchDaoKotlin;
     private final Executor executor;
 
     @Inject
     public SearchRepository(TasteDiveWebservice tasteDiveWebservice,
-                            SearchDao searchDao,
+                            SearchDaoJava searchDaoKotlin,
                             Executor executor) {
         this.tasteDiveWebservice = tasteDiveWebservice;
-        this.searchDao = searchDao;
+        this.searchDaoKotlin = searchDaoKotlin;
         this.executor = executor;
     }
 
-    public void delete(SearchResultEntity searchResultEntity) {
-        searchDao.delete(searchResultEntity);
+    public LiveData<SearchResultEntity> getSavedResults(long rowId) {
+        return searchDaoKotlin.loadSavedResult(rowId);
+    }
+
+    public void deleteSavedResult(long rowId) {
+        searchDaoKotlin.deleteSavedResult(rowId);
     }
 
     public LiveData<List<SearchResultEntity>> getSearchResult(
@@ -44,16 +47,16 @@ public class SearchRepository {
             String searchLimit) {
         refreshResults(searchQuery, searchType, searchLimit);
         if (searchType.equals("mixed")) {
-            return searchDao.loadMixed(searchQuery, searchLimit);
+            return searchDaoKotlin.loadMixed(searchQuery, searchLimit);
         } else {
-            return searchDao.load(searchQuery, searchType, searchLimit);
+            return searchDaoKotlin.load(searchQuery, searchType, searchLimit);
         }
     }
 
     private void refreshResults(final String userSearchQuery
             , String userSearchType, String userSearchLimit) {
         executor.execute(() -> {
-//            boolean resultExists = (searchDao.hasResult(userSearchQuery,userSearchType,userSearchLimit) != null);
+//            boolean resultExists = (searchDaoKotlin.hasResult(userSearchQuery,userSearchType,userSearchLimit) != null);
 //            if (!resultExists) {
             Call<Api> call;
 
@@ -79,7 +82,7 @@ public class SearchRepository {
                                             result.getWTeaser(), result.getWUrl(),
                                             result.getYUrl(), result.getYID());
 
-                            searchDao.save(searchResultEntity);
+                            searchDaoKotlin.save(searchResultEntity);
                         }
 
                     });
@@ -94,9 +97,5 @@ public class SearchRepository {
         });
 
 
-    }
-
-    public LiveData<SearchResultEntity> getSavedResults(long rowId) {
-        return searchDao.loadSavedResult(rowId);
     }
 }

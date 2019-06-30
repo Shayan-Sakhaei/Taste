@@ -1,95 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/search_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/search_button"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rounded_edittext"
-        android:ems="10"
-        android:hint="Enter the title..."
-        android:inputType="textPersonName"
-        android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white" />
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_toEndOf="@+id/search_editText"
-        android:background="@drawable/round_button"
-        android:text="Search"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:id="@+id/type_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_editText"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Select Type"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/type_spinner"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/search_editText"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/type_textView"
-        android:background="@android:color/white" />
-
-    <TextView
-        android:id="@+id/limit_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/type_textView"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Select Quantity"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/limit_spinner"
-        android:layout_width="85dp"
-        android:layout_height="21dp"
-        android:layout_below="@+id/type_textView"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_toEndOf="@+id/limit_textView"
-        android:background="@android:color/white" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <fragment
+        android:name="com.critics.taste.fragments.MasterFragment"
+        android:id="@+id/fragment_master"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/limit_textView"
-        android:layout_margin="8dp" />
+        android:layout_height="match_parent"/>
 
-    <!--<fragment-->
-    <!--android:id="@+id/master_fragment"-->
-    <!--android:name="com.critics.taste.fragments.MasterFragment"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/limit_textView"-->
-    <!--android:layout_margin="8dp" />-->
 
-</RelativeLayout>
+
+</FrameLayout>

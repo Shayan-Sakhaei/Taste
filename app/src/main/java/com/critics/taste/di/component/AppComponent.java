@@ -3,7 +3,7 @@ package com.critics.taste.di.component;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.critics.taste.database.dao.SearchDao;
+import com.critics.taste.database.dao.SearchDaoJava;
 import com.critics.taste.di.module.DatabaseModule;
 import com.critics.taste.di.module.OkHttpClientModule;
 import com.critics.taste.di.module.PicassoModule;
@@ -12,7 +12,6 @@ import com.critics.taste.di.module.RestApiModule;
 import com.critics.taste.di.module.ViewModelModule;
 import com.critics.taste.interfaces.TasteApplicationScope;
 import com.critics.taste.interfaces.TasteDiveWebservice;
-import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.Executor;
 
@@ -34,7 +33,7 @@ public interface AppComponent {
 
     TasteDiveWebservice getTasteDiveWebservice();
 
-    SearchDao getSearchDao();
+    SearchDaoJava getSearchDao();
 
     Executor getExecutor();
 

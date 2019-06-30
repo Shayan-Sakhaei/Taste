@@ -1,4 +1,4 @@
-package com.critics.taste.MainActivityFeature;
+package com.critics.taste.interfaces;
 
 import javax.inject.Scope;
 

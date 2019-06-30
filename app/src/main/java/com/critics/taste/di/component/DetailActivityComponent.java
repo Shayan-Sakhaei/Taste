@@ -1,7 +1,7 @@
-package com.critics.taste.DetailActivityFeature;
+package com.critics.taste.di.component;
 
 import com.critics.taste.DetailActivity;
-import com.critics.taste.di.component.AppComponent;
+import com.critics.taste.interfaces.DetailActivityScope;
 
 import dagger.BindsInstance;
 import dagger.Component;

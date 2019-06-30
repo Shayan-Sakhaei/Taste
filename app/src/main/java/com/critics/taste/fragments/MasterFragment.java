@@ -3,12 +3,14 @@ package com.critics.taste.fragments;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,9 @@ import javax.inject.Inject;
  * A simple {@link Fragment} subclass.
  */
 public class MasterFragment extends Fragment {
+    private static final String TAG = "MasterFragment";
+
+    Context mContext;
 
     @Inject
     SearchResultAdapter searchResultAdapter;
@@ -60,9 +65,14 @@ public class MasterFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_master, container, false);
@@ -74,7 +84,6 @@ public class MasterFragment extends Fragment {
         recyclerView = view.findViewById(R.id.master_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(searchResultAdapter);
 
         return view;
     }
@@ -84,14 +93,18 @@ public class MasterFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //INITIALIZE DAGGER COMPONENT
         MasterFragmentComponent masterFragmentComponent = DaggerMasterFragmentComponent.builder()
                 .fragment(this)
-                .appComponent(AppComponentHelper.getAppComponent(getContext()))
+                .appComponent(AppComponentHelper.getAppComponent(mContext))
                 .build();
-
         masterFragmentComponent.injectMasterFragment(this);
 
+        //INITIALIZE VIEWMODEL
         viewModel = ViewModelProviders.of(this, this.viewModelFactory).get(MainActivityViewModel.class);
+
+        //SET RECYCLERVIEW ADAPTER
+        recyclerView.setAdapter(searchResultAdapter);
 
         //SEARCH BUTTON PRESSED
         searchButton.setOnClickListener((View view) -> {
@@ -105,21 +118,37 @@ public class MasterFragment extends Fragment {
             viewModel.getSearchResultEntityLiveData()
                     .observe(this, searchResultEntities -> {
                         searchResultAdapter.setItems(searchResultEntities);
+                        Log.d(TAG, "set items called");
                         mResults = searchResultEntities;
                     });
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                SearchResultEntity resultEntity = mResults.get(position);
+                long clickedResultId = resultEntity.getId();
+                viewModel.deleteSavedResult(clickedResultId);
+            }
+        }).attachToRecyclerView(recyclerView);
 
     }
 
     private void initializeSpinners() {
         ArrayAdapter<CharSequence> typeSpinnerAdapter = ArrayAdapter
-                .createFromResource(getContext(), R.array.search_result_type
+                .createFromResource(mContext, R.array.search_result_type
                         , android.R.layout.simple_spinner_item);
         typeSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         searchTypeSpinner.setAdapter(typeSpinnerAdapter);
 
         ArrayAdapter<CharSequence> limitSpinnerAdapter = ArrayAdapter
-                .createFromResource(getContext(), R.array.search_result_limit
+                .createFromResource(mContext, R.array.search_result_limit
                         , android.R.layout.simple_spinner_item);
         limitSpinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         searchLimitSpinner.setAdapter(limitSpinnerAdapter);

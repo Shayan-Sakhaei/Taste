@@ -13,13 +13,13 @@ import java.util.List;
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
-public interface SearchDao {
+public interface SearchDaoJava {
 
     @Insert(onConflict = REPLACE)
     void save(SearchResultEntity searchResultEntity);
 
-    @Delete
-    void delete(SearchResultEntity searchResultEntity);
+    @Query("DELETE FROM results_table WHERE row_id = :rowId")
+    void deleteSavedResult(long rowId);
 
     @Query("SELECT * FROM results_table WHERE search_query = :searchQuery AND" +
             " result_type = :searchType ORDER BY result_name ASC LIMIT :searchLimit")
@@ -31,6 +31,5 @@ public interface SearchDao {
 
     @Query("SELECT * FROM results_table WHERE row_id = :rowId")
     LiveData<SearchResultEntity> loadSavedResult(long rowId);
-
 
 }

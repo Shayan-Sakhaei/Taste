@@ -44,8 +44,8 @@ public class MainActivityViewModel extends ViewModel {
         return this.searchResultEntity;
     }
 
-    public void delete(SearchResultEntity searchResultEntity) {
-        searchRepository.delete(searchResultEntity);
+    public void deleteSavedResult(long rowId) {
+        searchRepository.deleteSavedResult(rowId);
     }
 
     public void sendNotification() {

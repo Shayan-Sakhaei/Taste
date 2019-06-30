@@ -1,6 +1,6 @@
 package com.critics.taste.di.module;
 
-import com.critics.taste.database.dao.SearchDao;
+import com.critics.taste.database.dao.SearchDaoJava;
 import com.critics.taste.interfaces.TasteDiveWebservice;
 import com.critics.taste.repositories.SearchRepository;
 
@@ -14,7 +14,7 @@ public abstract class RepositoryModule {
 
     @Provides
     static SearchRepository provideSearchResultRepository(TasteDiveWebservice tasteDiveWebservice,
-                                                   SearchDao searchDao, Executor executor) {
-        return new SearchRepository(tasteDiveWebservice, searchDao, executor);
+                                                          SearchDaoJava searchDaoKotlin, Executor executor) {
+        return new SearchRepository(tasteDiveWebservice, searchDaoKotlin, executor);
     }
 }
