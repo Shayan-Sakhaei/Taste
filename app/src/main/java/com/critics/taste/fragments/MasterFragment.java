@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.navigation.Navigation;
+
 import com.critics.taste.MainActivity;
 import com.critics.taste.R;
 import com.critics.taste.adapter.SearchResultAdapter;
@@ -65,6 +67,7 @@ public class MasterFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -101,7 +104,7 @@ public class MasterFragment extends Fragment {
         masterFragmentComponent.injectMasterFragment(this);
 
         //INITIALIZE VIEWMODEL
-        viewModel = ViewModelProviders.of(getActivity(), this.viewModelFactory)
+        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory)
                 .get(MainActivityViewModel.class);
 
         //SET RECYCLERVIEW ADAPTER
@@ -165,7 +168,9 @@ public class MasterFragment extends Fragment {
 
             SearchResultEntity resultItem = mResults.get(position);
             viewModel.select(resultItem);
-            ((MainActivity)getActivity()).replaceFragment();
+//            ((MainActivity)getActivity()).replaceFragment();
+            Navigation.findNavController(view)
+                    .navigate(R.id.action_masterFragment_to_detailFragment);
         }
     };
 }
