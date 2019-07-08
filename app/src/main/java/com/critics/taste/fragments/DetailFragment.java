@@ -44,12 +44,14 @@ public class DetailFragment extends Fragment {
 
     private static final String youtubeAddress = "https://www.youtube.com/watch?v=";
     String youtubeId;
+    String wikipediaUrl;
 
 
     TextView name;
     TextView type;
     TextView teaser;
     ImageButton yotube;
+    ImageButton wikipedia;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -70,7 +72,8 @@ public class DetailFragment extends Fragment {
         type = view.findViewById(R.id.type);
         teaser = view.findViewById(R.id.teaser);
         teaser.setMovementMethod(new ScrollingMovementMethod());
-        yotube = view.findViewById(R.id.youtube);
+        yotube = view.findViewById(R.id.youtube_imageButton);
+        wikipedia = view.findViewById(R.id.wikipedia_imageButton);
         return view;
     }
 
@@ -97,6 +100,7 @@ public class DetailFragment extends Fragment {
             type.setText(searchResultEntity.getType());
             teaser.setText(searchResultEntity.getWTeaser());
             youtubeId = searchResultEntity.getYId();
+            wikipediaUrl = searchResultEntity.getWUrl();
 
         });
 
@@ -105,6 +109,12 @@ public class DetailFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
             startActivity(intent);
 
+        });
+
+        wikipedia.setOnClickListener(v -> {
+            Uri webPage = Uri.parse(wikipediaUrl);
+            Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
+            startActivity(intent);
         });
     }
 }
